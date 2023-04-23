@@ -39,7 +39,7 @@ jobs:
     - name: Checkout
       uses: actions/checkout@v2
     - name: Run Auto-GPT
-      uses: nalbion/auto-gpt-action
+      uses: nalbion/auto-gpt-action@master
       with:
         openai_key: ${{ secrets.OPENAI_KEY }}
         issue_number: ${{ github.event.issue.number }}

@@ -39,8 +39,8 @@ jobs:
         uses: nalbion/auto-gpt-action@master
         with:
           openai_key: ${{ secrets.OPENAI_KEY }}
-          issue_number: ${{ github.event.issue.number }}
           issue_body: ${{ github.event.issue.body }}
+          issue_number: ${{ github.event.issue.number }}
 
       - name: Commit changes
         run: |

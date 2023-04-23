@@ -1,0 +1,52 @@
+# This workflow will run the `Auto-GPT` action when an issue is labeled `auto-gpt`
+name: Auto-GPT
+
+on:
+  issues:
+    types: [labeled]
+
+jobs:
+  resolve-issue:
+    if: "contains(github.event.label.name, 'auto-gpt')"
+    runs-on: ubuntu-latest
+    permissions:
+      issues: write
+      contents: write
+    steps:
+      - name: Update issue
+        uses: peter-evans/create-or-update-comment@v1
+        with: 
+          issue-number: ${{ github.event.issue.number }}
+          body: "Running Auto-GPT..."
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: '3.8'
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+      - name: Run Auto-GPT
+        uses: nalbion/auto-gpt-action@v1
+        with:
+          openai_key: ${{ secrets.OPENAI_KEY }}
+          issue_number: ${{ github.event.issue.number }}
+          issue_body: ${{ github.event.issue.body }}
+      - name: Commit changes
+        run: |
+          git config --global user.email 'github-actions@github.com'
+          git config --global user.name 'GitHub Actions'
+          git add -A
+          git commit -m 'Auto-GPT changes'
+      - name: Push changes
+        uses: ad-m/github-push-action@master
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          branch: auto-gpt/${{ github.event.issue.number }}
+      - name: Update issue
+        uses: peter-evans/create-or-update-comment@v1
+        with:
+          issue-number: ${{ github.event.issue.number }}
+          body: ${{ steps.run-auto-gpt.outputs.comment_message }}

@@ -20,26 +20,28 @@ jobs:
           body: "Running Auto-GPT..."
       - name: Checkout
         uses: actions/checkout@v2
-      - name: Set up Python
-        uses: actions/setup-python@v2
-        with:
-          python-version: '3.8'
-      - name: Install dependencies
-        run: |
-          python -m pip install --upgrade pip
-          pip install -r requirements.txt
+
+      # - name: Set up Python
+      #   uses: actions/setup-python@v2
+      #   with:
+      #     python-version: '3.8'
+      # - name: Install dependencies
+      #   run: |
+      #     python -m pip install --upgrade pip
+      #     pip install -r requirements.txt
       - name: Run Auto-GPT
         uses: nalbion/auto-gpt-action
         with:
           openai_key: ${{ secrets.OPENAI_KEY }}
           issue_number: ${{ github.event.issue.number }}
           issue_body: ${{ github.event.issue.body }}
+
       - name: Commit changes
         run: |
           git config --global user.email 'github-actions@github.com'
           git config --global user.name 'GitHub Actions'
           git add -A
-          git commit -m 'Auto-GPT changes'
+          git commit -m ${{ steps.run-auto-gpt.outputs.commit_message }}
       - name: Push changes
         uses: ad-m/github-push-action@master
         with:

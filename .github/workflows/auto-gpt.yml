@@ -20,8 +20,8 @@ jobs:
           body: "Running Auto-GPT..."
       - name: Checkout
         uses: actions/checkout@v2
-         with:
-           ref: develop
+        with:
+          ref: develop
       - name: Create and checkout new branch
         run: |
           git checkout -b auto-gpt/${{ github.event.issue.number }}

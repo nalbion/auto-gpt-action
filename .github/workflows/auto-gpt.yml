@@ -20,6 +20,11 @@ jobs:
           body: "Running Auto-GPT..."
       - name: Checkout
         uses: actions/checkout@v2
+         with:
+           ref: develop
+      - name: Create and checkout new branch
+        run: |
+          git checkout -b auto-gpt/${{ github.event.issue.number }}
 
       # - name: Set up Python
       #   uses: actions/setup-python@v2
@@ -29,6 +34,7 @@ jobs:
       #   run: |
       #     python -m pip install --upgrade pip
       #     pip install -r requirements.txt
+
       - name: Run Auto-GPT
         uses: nalbion/auto-gpt-action@master
         with:
@@ -39,7 +45,7 @@ jobs:
       - name: Commit changes
         run: |
           git config --global user.email 'github-actions@github.com'
-          git config --global user.name 'GitHub Actions'
+          git config --global user.name 'Auto-GPT and GitHub Actions'
           git add -A
           git commit -m ${{ steps.run-auto-gpt.outputs.commit_message }}
       - name: Push changes

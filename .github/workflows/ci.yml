@@ -20,3 +20,14 @@ jobs:
       - name: Test
         run: |
           pytest
+
+
+  act:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Run act
+        uses: nektos/act@v1
+        with:
+          args: issues -e tests/issues-event.json

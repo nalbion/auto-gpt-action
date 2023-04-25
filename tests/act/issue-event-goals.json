@@ -1,0 +1,10 @@
+{
+    "issue": {
+      "number": 2,
+      "title": "Test Auto-GPT",
+      "body": "# AI Goals\n\n* Run lint and fix all errors\n\n* Exit when lint no longer returns errors",
+      "labels": [
+        "auto-gpt"
+      ]
+    }
+  }

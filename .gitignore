@@ -1,4 +1,5 @@
 file_logger.txt
+.env
 
 # IntelliJ IDEA
 .idea/

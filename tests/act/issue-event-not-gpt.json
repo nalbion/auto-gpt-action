@@ -1,0 +1,11 @@
+{
+  "issue_type": "labeled",
+  "labels": [
+    {
+      "name": "auto-gpt",
+      "new": true
+    }
+  ],
+  "body": "Run lint and fix all errors\n\n* Exit when lint no longer returns errors"
+}
+  

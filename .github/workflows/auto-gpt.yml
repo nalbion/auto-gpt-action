@@ -4,10 +4,12 @@ name: Auto-GPT
 on:
   issues:
     types: [labeled]
+    with:
+      if: github.event.issue.labels.new == 'auto-gpt'
 
 jobs:
   resolve-issue:
-    if: "contains(github.event.label.name, 'auto-gpt')"
+    # if: "contains(github.event.label.name, 'auto-gpt')"
     runs-on: ubuntu-latest
     permissions:
       issues: write

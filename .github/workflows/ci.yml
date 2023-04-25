@@ -21,13 +21,25 @@ jobs:
         run: |
           pytest
 
-
   act:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
         uses: actions/checkout@v2
-      - name: Run act
-        uses: nektos/act@v1
-        with:
-          args: issues -e tests/issues-event.json
+      - name: Install ACT
+        run: |
+          curl -sSL https://raw.githubusercontent.com/nektos/act/main/install.sh | bash
+      - name: Test workflow with issues event labeled auto-gpt
+        run: |
+          output=$(act issues -e tests/act/issues-event.json)
+          if ! echo "$output" | grep -q "\[Auto-GPT/resolve-issue\] 🏁  Job succeeded"; then
+            echo "The Auto-GPT resolve-issue job did not execute."
+            exit 1
+          fi
+      - name: Test workflow with issues event NOT labeled auto-gpt
+        run: |
+          output=$(act issues -e tests/act/issues-event-not-gpt.json)
+          if echo "$output" | grep -q "\[Auto-GPT/resolve-issue\]"; then
+            echo "The Auto-GPT resolve-issue job should NOT execute."
+            exit 1
+          fi
